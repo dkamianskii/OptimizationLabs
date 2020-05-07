@@ -42,36 +42,35 @@ def grad_const_step(grad_func, alpha, eps, x_0):
 
 
 def Newton_pshenichii(func, grad_func, hess_func, alpha_0, eps, e, x_0):
-    grad = grad_func(x_0)
-    grad_norm = np.linalg.norm(grad)
     x_k = x_0.copy()
     alpha_k = alpha_0
+    grad = grad_func(x_k)
+    grad_norm = np.linalg.norm(grad)
+    d_k = -np.dot(np.linalg.inv(hess_func(x_k)), (grad.reshape(2, 1)))
+    d_k_str = d_k.flatten()
     count = 0
     while grad_norm**2 > eps:
-        grad = grad_func(x_k)
-        grad_norm = np.linalg.norm(grad)
-        d_k = -np.dot(np.linalg.inv(hess_func(x_k)), (grad.reshape(2, 1)))
-        d_k_str = d_k.flatten()
         while func(x_k + alpha_k*d_k_str) - func(x_k) > e * alpha_k * (np.dot(grad, d_k)[0]):
             alpha_k /= 2
         x_k += alpha_k*d_k_str
         count += 1
-    return x_k, count
-
-
-def Newton_pshenichii_count_beta(func, grad_func, hess_func, alpha_0, eps, e, x_0, x_toch):
-    grad = grad_func(x_0)
-    grad_norm = np.linalg.norm(grad)
-    x_k = x_0.copy()
-    x_prev = 0
-    alpha_k = alpha_0
-    count = 0
-    beta = []
-    while grad_norm**2 > eps:
         grad = grad_func(x_k)
         grad_norm = np.linalg.norm(grad)
         d_k = -np.dot(np.linalg.inv(hess_func(x_k)), (grad.reshape(2, 1)))
         d_k_str = d_k.flatten()
+    return x_k, count
+
+
+def Newton_pshenichii_count_beta(func, grad_func, hess_func, alpha_0, eps, e, x_0, x_toch, m_e):
+    x_k = x_0.copy()
+    alpha_k = alpha_0
+    grad = grad_func(x_k)
+    grad_norm = np.linalg.norm(grad)
+    d_k = -np.dot(np.linalg.inv(hess_func(x_k)), (grad.reshape(2, 1)))
+    d_k_str = d_k.flatten()
+    count = 0
+    beta = []
+    while grad_norm**2 > eps:
         while func(x_k + alpha_k*d_k_str) - func(x_k) > e * alpha_k * (np.dot(grad, d_k)[0]):
             alpha_k /= 2
         x_prev = x_k.copy()
@@ -80,13 +79,17 @@ def Newton_pshenichii_count_beta(func, grad_func, hess_func, alpha_0, eps, e, x_
         log_prev = np.log(np.linalg.norm(x_prev - x_toch))
         beta.append(log_k/log_prev)
         count += 1
-    return x_k, count, beta
+        grad = grad_func(x_k)
+        grad_norm = np.linalg.norm(grad)
+        d_k = -np.dot(np.linalg.inv(hess_func(x_k)), (grad.reshape(2, 1)))
+        d_k_str = d_k.flatten()
+    return x_k, count, beta, grad_norm/m
 
 
 accuracy = [0.1, 0.001, 0.0001]
 
 
-file = open('out.txt', 'w')
+file = open('out2.txt', 'w')
 
 x_start = np.array([-100., 100.])
 file.write('starting point = ' + str(x_start) + '\n')
@@ -102,8 +105,8 @@ for acc in accuracy:
 
 file.write('\n\n')
 file.write('Research of convergence rate \n')
-high_acc = 1e-14
-acc_for_beta = 0.01
+high_acc = 10e-16
+acc_for_beta = 10e-5
 x_high_acc, count = Newton_pshenichii(f, grad_f, matrix_hessa, 1, high_acc, 0.2, x_start)
-x_acc, k, beta = Newton_pshenichii_count_beta(f, grad_f, matrix_hessa, 1, acc_for_beta, 0.2, x_start, x_high_acc)
-file.write('x_acc=' + str(x_acc) + '  count=' + str(k) + '  f(x_acc)=' + str(f(x_acc)) + '  betas for interation = ' + str(beta))
+x_acc, k, beta, acc_t = Newton_pshenichii_count_beta(f, grad_f, matrix_hessa, 1, acc_for_beta, 0.2, x_start, x_high_acc, m)
+file.write('x_acc=' + str(x_acc) + '  count=' + str(k) + '  f(x_acc)=' + str(f(x_acc)) + '  betas for interation = ' + str(beta)+ '  accuracy = ' + str(acc_t))
