@@ -1,0 +1,51 @@
+starting point = [-100.  100.]
+accuracy =0.1:  
+golden ratio ----------------
+x_acc=[-0.77647869 -0.28124769] main iter count=4 func count=48 arithmetic count=140  f(x_acc)=-1.4412206746453748
+Phibonacci ----------------
+x_acc=[-0.73829891 -0.26711122] main iter count=4 func count=60 arithmetic count=236  f(x_acc)=-1.4407532874450353
+accuracy =0.01:  
+golden ratio ----------------
+x_acc=[-0.74864779 -0.31605185] main iter count=5 func count=60 arithmetic count=175  f(x_acc)=-1.4464540804645565
+Phibonacci ----------------
+x_acc=[-0.73947331 -0.31131061] main iter count=5 func count=75 arithmetic count=295  f(x_acc)=-1.4465778469395367
+accuracy =0.001:  
+golden ratio ----------------
+x_acc=[-0.74194744 -0.31218568] main iter count=6 func count=72 arithmetic count=210  f(x_acc)=-1.4465872238062345
+Phibonacci ----------------
+x_acc=[-0.73947331 -0.31131061] main iter count=5 func count=75 arithmetic count=295  f(x_acc)=-1.4465778469395367
+accuracy =0.0001:  
+golden ratio ----------------
+x_acc=[-0.74194744 -0.31218568] main iter count=6 func count=72 arithmetic count=210  f(x_acc)=-1.4465872238062345
+Phibonacci ----------------
+x_acc=[-0.74063779 -0.31270412] main iter count=6 func count=90 arithmetic count=354  f(x_acc)=-1.4465887854664956
+accuracy =1e-05:  
+golden ratio ----------------
+x_acc=[-0.74134076 -0.31287162] main iter count=7 func count=84 arithmetic count=245  f(x_acc)=-1.446589366153378
+Phibonacci ----------------
+x_acc=[-0.74063779 -0.31270412] main iter count=6 func count=90 arithmetic count=354  f(x_acc)=-1.4465887854664956
+accuracy =1e-06:  
+golden ratio ----------------
+x_acc=[-0.74134076 -0.31287162] main iter count=7 func count=84 arithmetic count=245  f(x_acc)=-1.446589366153378
+Phibonacci ----------------
+x_acc=[-0.74119152 -0.3128089 ] main iter count=7 func count=105 arithmetic count=413  f(x_acc)=-1.4465894206547798
+accuracy =1e-07:  
+golden ratio ----------------
+x_acc=[-0.74121423 -0.31278002] main iter count=8 func count=96 arithmetic count=280  f(x_acc)=-1.446589420130779
+Phibonacci ----------------
+x_acc=[-0.74119152 -0.3128089 ] main iter count=7 func count=105 arithmetic count=413  f(x_acc)=-1.4465894206547798
+accuracy =1e-08:  
+golden ratio ----------------
+x_acc=[-0.74120118 -0.3127961 ] main iter count=9 func count=108 arithmetic count=315  f(x_acc)=-1.4465894212690253
+Phibonacci ----------------
+x_acc=[-0.74119152 -0.3128089 ] main iter count=7 func count=105 arithmetic count=413  f(x_acc)=-1.4465894206547798
+accuracy =1e-09:  
+golden ratio ----------------
+x_acc=[-0.74120118 -0.3127961 ] main iter count=9 func count=108 arithmetic count=315  f(x_acc)=-1.4465894212690253
+Phibonacci ----------------
+x_acc=[-0.74119645 -0.31279432] main iter count=8 func count=120 arithmetic count=472  f(x_acc)=-1.4465894212935355
+accuracy =1e-10:  
+golden ratio ----------------
+x_acc=[-0.74119801 -0.31279442] main iter count=10 func count=120 arithmetic count=350  f(x_acc)=-1.4465894212967614
+Phibonacci ----------------
+x_acc=[-0.74119645 -0.31279432] main iter count=8 func count=120 arithmetic count=472  f(x_acc)=-1.4465894212935355

@@ -30,8 +30,23 @@ g_v2 = np.array([0])
 def rozen(func, grad_func, C, F, g, n, alpha_0, x_0, lbd):
     x_k = x_0.copy()
     k = 0
-    print(func(x_k))
     while True:
+        print('----------------------------------')
+        print('Step =  ' + str(k))
+        print('x_k =  ', x_k)
+        print('F(x_k) =  ' + str(func(x_k)))
+        print(
+            f'({x_k[0]:.3f})*({C[0][0]}) + ({x_k[1]:.3f})*({C[0][1]}) + ({x_k[2]:.3f})*({C[0][2]}) + ({x_k[3]:.3f})*({C[0][3]}) = '
+            f' {np.dot(C, np.reshape(x_k, (n, 1)))[0][0]:.3f}, d1 = 2')
+        print(
+            f'({x_k[0]:.3f})*({C[1][0]}) + ({x_k[1]:.3f})*({C[1][1]}) + ({x_k[2]:.3f})*({C[1][2]}) + ({x_k[3]:.3f})*({C[1][3]}) = '
+            f' {np.dot(C, np.reshape(x_k, (n, 1)))[1][0]:.3f}, d2 = 3')
+        print(
+            f'({x_k[0]:.3f})*({F[0][0]}) + ({x_k[1]:.3f})*({F[0][1]}) + ({x_k[2]:.3f})*({F[0][2]}) + ({x_k[3]:.3f})*({F[0][3]}) = '
+            f' {np.dot(F, np.reshape(x_k, (n, 1)))[0][0]:.3f} <=  9')
+        print(
+            f'({x_k[0]:.3f})*({F[1][0]}) + ({x_k[1]:.3f})*({F[1][1]}) + ({x_k[2]:.3f})*({F[1][2]}) + ({x_k[3]:.3f})*({F[1][3]}) = '
+            f' {np.dot(F, np.reshape(x_k, (n, 1)))[1][0]:.3f} <=  8')
         bords = np.dot(F, np.reshape(x_k, (n, 1)))
         F1 = np.empty((0, n))
         F2 = np.empty((0, n))
@@ -44,6 +59,8 @@ def rozen(func, grad_func, C, F, g, n, alpha_0, x_0, lbd):
                 g2 = np.append(g2, g[i])
         alpha_k = alpha_0
         step1 = True
+        print('Matrix F1:')
+        print(F1)
         while step1:
             if C.size == 0 and F1.size == 0:
                 A = None
@@ -54,20 +71,20 @@ def rozen(func, grad_func, C, F, g, n, alpha_0, x_0, lbd):
                 else:
                     A = C
                 A_t = np.transpose(A)
-                temp1 = np.dot(A, A_t)
-                temp2 = np.linalg.inv(temp1)
-                temp3 = np.dot(A_t, temp2)
-                temp4 = np.dot(temp3, A)
                 P_k = np.identity(n) - np.dot(np.dot(A_t, np.linalg.inv(np.dot(A, A_t))), A)
-            temp5 = grad_func(x_k)
+            print('Matrix A:')
+            print(A)
             s_k = -np.dot(P_k, np.reshape(grad_func(x_k), (n, 1)))
+            print('s_k:  ')
+            print(s_k)
             step1 = False
-            if np.linalg.norm(s_k) <= 1e-10:
+            if np.linalg.norm(s_k) <= 1e-13:
                 if A is None:
                     return x_k, func(x_k), k
                 else:
-                    temp6 = F1.shape[0]
                     w = - np.dot(np.dot(np.linalg.inv(np.dot(A, A_t)), A), np.reshape(grad_func(x_k), (n, 1)))
+                    print('W vector:  ')
+                    print(w)
                     for j in range(F1.shape[0]):
                         if w[C.shape[0] + j] < 0:
                             F1 = np.delete(F1, j, axis=0)
@@ -90,16 +107,12 @@ def rozen(func, grad_func, C, F, g, n, alpha_0, x_0, lbd):
                 if F2_from_xk[i] > g2[i]:
                     F2_flag = True
                     break
+        print('alpha_k =  ', alpha_k)
         x_k = x_k + alpha_k * s_k
-        # print(x_k, func(x_k), s_k)
         k += 1
 
 
-# print(rozen(f2, grad_f2, C_mat2, F_mat2, g_v2, 2, 0.5, np.array([1, 2]), 2))
-# print(rozen(f2, grad_f2, C_mat2, F_mat2, g_v2, 2, 0.5, np.array([25, -10]), 2))
-print(rozen(f, grad_f, C_mat, F_mat, g_v, 4, 0.1, np.array([2, 1, 1, 0]), 2))
-print(rozen(f, grad_f, C_mat, F_mat, g_v, 4, 0.1, np.array([3, 1, 0, 0]), 2))
-print(rozen(f, grad_f, C_mat, F_mat, g_v, 4, 0.1, np.array([10, -4, -12, 5]), 2))
-
-file = open('out.txt','w')
-file.write(str(rozen(f, grad_f, C_mat, F_mat, g_v, 4, 0.1, np.array([2, 1, 1, 0]), 2)))
+file = open('out.txt', 'w')
+file.write(str(rozen(f, grad_f, C_mat, F_mat, g_v, 4, 0.1, np.array([2, 1, 1, 0]), 2)) + '\n')
+# file.write(str(rozen(f, grad_f, C_mat, F_mat, g_v, 4, 0.1, np.array([2, 1, 1, 0]), 2)) + '\n')
+# file.write(str(rozen(f, grad_f, C_mat, F_mat, g_v, 4, 0.1, np.array([10, -4, -12, 5]), 2)) + '\n')
